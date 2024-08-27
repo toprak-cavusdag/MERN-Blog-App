@@ -1,0 +1,14 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.nav__logo {
+  width: 4rem;
+  display: block;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
