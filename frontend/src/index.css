@@ -12,8 +12,8 @@
   --color-bg: hwb(250 95% 0%);
 
   --transition: all 300ms ease;
-  --container-width-md: 84%;
-  --container-width-lg: 92%;
+  --container-width-lg: 84%;
+  --container-width-md: 92%;
   --form-width: 50%;
 
   --radius-1: 0.3rem;
@@ -33,7 +33,7 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: var(--color-bg);
   font-size: 0.9rem;
-  line-height: 1;
+  line-height: 1.7;
   color: var(--color-gray-700);
 }
 
@@ -108,6 +108,13 @@ section {
   color: var(--color-bg);
   font-size: 0.75rem;
   font-weight: 400;
+}
+
+.btn.category{
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .btn .sm {
@@ -187,13 +194,12 @@ footer {
   transition: var(--transition);
 }
 
-
-.footer__categories a:hover{
+.footer__categories a:hover {
   background: var(--color-white);
   color: var(--color-gray-900);
 }
 
-.footer__copyright{
+.footer__copyright {
   text-align: center;
   border-top: 2px solid var(--color-gray-700);
   padding: 1rem;
@@ -201,7 +207,7 @@ footer {
   font-weight: 300;
 }
 
-.center{
+.center {
   text-align: center;
   padding: 5rem;
   margin-inline: auto;
@@ -209,7 +215,63 @@ footer {
   width: 100%;
 }
 
-
-.error-page h2{
+.error-page h2 {
   margin-bottom: 3rem;
+}
+
+/* ======================= HOME ======================= */
+
+/* ======================= POSTS ======================= */
+
+.posts__container {
+  display: grid;
+  gap: 4rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.post {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: var(--radius-4);
+  padding-bottom: 2rem;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.post:hover {
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.post__thumbnail {
+  border-radius: var(--radius-3);
+  overflow: hidden;
+  height: 16rem;
+}
+
+.post__content {
+  margin-top: 1.5rem;
+}
+
+.post__content h3 {
+  margin: 1rem 0 0.6rem;
+}
+
+.post__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.post__author{
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.post__author-avatar{
+  width: 2.5rem;
+  aspect-ratio: 1/1;
+  border-radius: var(--radius-2);
+  overflow: hidden;
 }
