@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
-import { MdLogout } from "react-icons/md";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { IoMdClose } from "react-icons/io";
 
 const Header = () => {
   return (
@@ -26,7 +25,7 @@ const Header = () => {
           </li>
         </ul>
         <button className="nav__toggle-btn">
-        <RxHamburgerMenu />
+        <IoMdClose />
         </button>
       </div>
     </nav>
