@@ -21,6 +21,7 @@ const Login = () => {
             onChange={(e) =>
               setUserDate({ ...userData, email: e.target.value })
             }
+            autoFocus
           />
 
           <input
