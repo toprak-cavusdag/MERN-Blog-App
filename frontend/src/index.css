@@ -2,7 +2,7 @@
   --color-primary: #6f6af8;
   --color-white: #fff;
   --color-red: rgb(255, 63, 63);
-  --color-gray-100: hsl(220, 20%, 10%, 5%);
+  --color-gray-100: hsla(218, 82%, 55%, 0.05);
   --color-gray-200: hsl(220, 20%, 10%, 10%);
   --color-gray-300: hsl(220, 20%, 10%, 25%);
   --color-gray-500: hsl(220, 20%, 10%, 50%);
