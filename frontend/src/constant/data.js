@@ -49,33 +49,44 @@ export const DUMMY_POST = [
 
 export const AUTHORS_DUMMY = [
   {
-    id:1, 
-    avatar:Avatar1,
+    id: 1,
+    avatar: Avatar1,
     name: "Ernest Archiever",
-    posts:3
+    posts: 3,
   },
   {
-    id:2, 
-    avatar:Avatar2,
+    id: 2,
+    avatar: Avatar2,
     name: "Jane Doe",
-    posts:1
+    posts: 1,
   },
   {
-    id:3, 
-    avatar:Avatar3,
+    id: 3,
+    avatar: Avatar3,
     name: "Leo Tolstoy",
-    posts:3
+    posts: 3,
   },
   {
-    id:4, 
-    avatar:Avatar4,
+    id: 4,
+    avatar: Avatar4,
     name: "Charles Dickens",
-    posts:10
+    posts: 10,
   },
   {
-    id:5, 
-    avatar:Avatar5,
+    id: 5,
+    avatar: Avatar5,
     name: "Fyodor Dostoev",
-    posts:8
+    posts: 8,
   },
+];
+
+export const POST_CATEGORIES = [
+  "Agriculture",
+  "Business",
+  "Education",
+  "Entertainment",
+  "Art",
+  "Investment",
+  "Uncategorized",
+  "Weather",
 ];

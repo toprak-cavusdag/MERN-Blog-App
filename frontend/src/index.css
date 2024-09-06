@@ -366,7 +366,7 @@ textarea {
 
 .authors__container {
   display: grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
 }
 .author {
@@ -378,11 +378,11 @@ textarea {
   transition: var(--transition);
 }
 
-.author:hover{
+.author:hover {
   box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.07);
 }
 
-.author__avatar{
+.author__avatar {
   width: 5rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
@@ -390,30 +390,27 @@ textarea {
   overflow: hidden;
 }
 
-
-.author__avatar img{
+.author__avatar img {
   height: 100%;
 }
 
-
-.author__info{
+.author__info {
   margin-top: 1rem;
 }
 
-
 /* ======================= Profile DETAILS ======================= */
 
-.profile__container{
+.profile__container {
   display: grid;
   place-items: center;
   text-align: center;
 }
 
-.profile__details{
+.profile__details {
   width: 100%;
 }
 
-.avatar__wrapper{
+.avatar__wrapper {
   width: 15rem;
   aspect-ratio: 1/1;
   position: relative;
@@ -421,22 +418,23 @@ textarea {
   margin-top: 1rem;
 }
 
-.profile__avatar{
+.profile__avatar {
   height: 100%;
   border-radius: 50%;
   border: 1rem solid var(--color-white);
   overflow: hidden;
 }
 
-.avatar__form{
+.avatar__form {
   height: 1rem;
 }
 
-.avatar__form input{
+.avatar__form input {
   visibility: hidden;
 }
 
-.avatar__form label, .profile__avatar-btn{
+.avatar__form label,
+.profile__avatar-btn {
   background: var(--color-gray-900);
   color: var(--color-white);
   font-size: 1.3rem;
@@ -450,34 +448,32 @@ textarea {
   border-radius: 50%;
 }
 
-.profile__avatar-btn{
+.profile__avatar-btn {
   cursor: pointer;
   padding: 0;
   font-size: 1.5rem;
   background: var(--color-primary);
 }
 
-.profile__details h1{
+.profile__details h1 {
   margin-top: 1.5rem;
 }
 
-.form.profile__form{
+.form.profile__form {
   margin-top: 3rem;
   margin-inline: auto;
   width: var(--form-width);
 }
 
-
-
 /* ======================= Dashboard ======================= */
 
-.dashboard__container{
+.dashboard__container {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
 
-.dashboard__post{
+.dashboard__post {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -487,22 +483,143 @@ textarea {
   border-radius: var(--radius-3);
 }
 
-
-.dashboard__post-info{
+.dashboard__post-info {
   display: flex;
   gap: 2rem;
   width: 100%;
   align-items: center;
 }
 
-.dashboard_post-thumbnail{
+.dashboard_post-thumbnail {
   width: 4rem;
   border-radius: var(--radius-1);
   overflow: hidden;
 }
 
-
-.dashboard__post-actions{
+.dashboard__post-actions {
   display: flex;
   gap: 1rem;
+}
+
+.ql-editor {
+  overflow: scroll;
+  background: var(--color-white);
+  height: 10rem !important;
+}
+
+.quill {
+  width: 100%;
+}
+
+/* ======================= Responsive ======================= */
+
+@media screen and (max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  h3 {
+    font-size: 1.35rem;
+  }
+
+  .container {
+    width: var(--container-width-md);
+  }
+
+  .nav__container {
+    position: relative;
+  }
+
+  .nav__menu {
+    position: absolute;
+    top: 5rem;
+    right: 0;
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .nav__menu li {
+    width: 100%;
+    box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26);
+    animation: dropDown 500ms ease forwards;
+    opacity: 0;
+    transform: rotateX(90deg);
+    transform-origin: top;
+  }
+
+  @keyframes dropDown {
+    to {
+      opacity: 1;
+      transform: rotateX(0);
+    }
+  }
+
+  .nav__menu li:nth-child(2) {
+    animation-delay: 200ms;
+  }
+  .nav__menu li:nth-child(3) {
+    animation-delay: 400ms;
+  }
+  .nav__menu li:nth-child(4) {
+    animation-delay: 800ms;
+  }
+
+  .nav__menu li a {
+    display: block;
+    background: var(--color-white);
+    padding: 0.85rem 2.5rem;
+  }
+  .nav__toggle-btn {
+    display: inline-block;
+    background: transparent;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .posts__container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .footer__categories {
+    flex-direction: column;
+  }
+
+  .post-detail {
+    width: 100%;
+  }
+
+  .post-detail h1 {
+    margin-top: 1rem;
+  }
+
+  .register,
+  .login,
+  .create-post {
+    width: 100%;
+  }
+
+  .form.profile__form{
+    width: 100%;
+    margin-top: 2.5rem;
+  }
+
+  .authors__container{
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .dashboard__post{
+    flex-direction: column;
+  }
+
+  .dashboard__post-info{
+    gap: 1.5rem;
+  }
+
+  .dashboard_post-thumbnail{
+    width: 5rem;
+  }
 }
