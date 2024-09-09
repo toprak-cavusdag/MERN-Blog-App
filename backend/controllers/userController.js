@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const HttpError = require("../models/errorModel.js");
 const User = require("../models/userModel.js");
-
+const jwt = require("jsonwebtoken");
 // ============== Register a new user ==============
 // POST: api/users/register
 
@@ -49,7 +49,36 @@ const registerUser = async (req, res, next) => {
 // ============== Login a registered user ==============
 // POST: api/users/login
 const loginUser = async (req, res, next) => {
-  res.json("Login User");
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return next(new HttpError("Fill the all fields", 422));
+    }
+
+    const newEmail = email.toLowerCase();
+    const user = await User.findOne({ email: newEmail });
+    if (!user) {
+      return next(new HttpError("Invalid credentials", 422));
+    }
+
+    const comparePass = await bcrypt.compare(password, user.password);
+    if (!comparePass) {
+      return next(new HttpError("Invalid credentials", 422));
+    }
+
+    const { _id: id, name } = user;
+
+    const token = jwt.sign({ id, name }, process.env.JWT_SECRET, {
+      expiresIn: "2d",
+    });
+
+    res.status(200).json({ token, id, name });
+  } catch (error) {
+    return next(
+      new HttpError("Login failed. Please check your credentials.", 422)
+    );
+  }
 };
 
 // ============== User Profile ==============
