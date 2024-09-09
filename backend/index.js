@@ -5,6 +5,7 @@ require("dotenv").config();
 const userRoutes = require("./routes/userRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware.js");
+const fileUpload = require("express-fileupload");
 
 const app = express();
 app.use(express.json({ extended: true }));
@@ -14,7 +15,8 @@ app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 //Routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
-
+app.use(fileUpload({useTempFile: true}))
+app.use("/uploads", express.static(__dirname + "/uploads"))
 app.use(notFound);
 app.use(errorHandler);
 
@@ -23,3 +25,6 @@ connect(process.env.MONGO_URL)
     app.listen(process.env.PORT, () => console.log("App running on port 8000"))
   )
   .catch((err) => console.log(err));
+
+
+

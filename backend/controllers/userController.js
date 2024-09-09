@@ -90,16 +90,21 @@ const getUser = async (req, res, next) => {
     if (!user) {
       return next(new HttpError("User not found", 422));
     }
-    res.status(200).json(user)
+    res.status(200).json(user);
   } catch (error) {
-    return next(new HttpError(error))
+    return next(new HttpError(error));
   }
 };
 
 // ============== Change User Avatar (Profile Pictures) ==============
 // POST: api/users/change-avatar
 const changeAvatar = async (req, res, next) => {
-  res.json("Change Avatar");
+  try {
+    res.json(req.files);
+    console.log(req.files);
+  } catch (error) {
+    return next(new HttpError(error));
+  }
 };
 
 // ============== Change User Details (Profile Details) ==============
@@ -111,8 +116,14 @@ const editUser = async (req, res, next) => {
 // ============== Get Author ==============
 // POST: api/users/authors
 const getAuthor = async (req, res, next) => {
-  res.json("Authors");
+  try {
+    const authors = await User.find({}).select("-password");
+    res.status(200).json(authors);
+  } catch (error) {
+    return next(new HttpError(error));
+  }
 };
+
 
 module.exports = {
   registerUser,
