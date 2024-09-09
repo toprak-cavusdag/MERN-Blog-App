@@ -11,9 +11,9 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/:id", getUser);
+router.get("/:id", getUser);
 router.post("/change-avatar", changeAvatar);
-router.post("/", getAuthor);
-router.post("/edit-user", editUser);
+router.get("/", getAuthor);
+router.patch("/edit-user", editUser);
 
 module.exports = router;

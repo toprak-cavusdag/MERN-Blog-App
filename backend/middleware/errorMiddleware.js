@@ -1,7 +1,7 @@
 //Unsupported (404) routes
 
 const notFound = (req, res, next) => {
-  const error = new Error(`Not Found ${req.orginalUrl}`);
+  const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
   next(error);
 };
@@ -18,4 +18,4 @@ const errorHandler = (error, req, res, next) => {
     .json({ message: error.message || "An unknow error occured" });
 };
 
-modules.export = { notFound, errorHandler };
+module.exports = { notFound, errorHandler };
