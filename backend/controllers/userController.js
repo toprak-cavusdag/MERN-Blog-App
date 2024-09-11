@@ -3,7 +3,7 @@ const HttpError = require("../models/errorModel.js");
 const User = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
-const path = require('path');
+const path = require("path");
 const { v4: uuid } = require("uuid");
 
 // ============== Register a new user ==============
@@ -109,39 +109,105 @@ const changeAvatar = async (req, res, next) => {
     }
 
     const user = await User.findById(req.user.id);
-    
+
     // Delete old avatar if exists
     if (user.avatar) {
-      fs.unlink(path.join(__dirname, "..", "uploads", user.avatar), (err) => {
+      const oldFilePath = path.join(__dirname, "..", "uploads", user.avatar);
+      fs.access(oldFilePath, fs.constants.F_OK, (err) => {
         if (err) {
-          return next(new HttpError(err));
+          console.log(`File ${oldFilePath} does not exist.`);
+          // Proceed without error if the file does not exist
+        } else {
+          fs.unlink(oldFilePath, (err) => {
+            if (err) {
+              return next(new HttpError(err));
+            }
+          });
         }
       });
     }
 
-    // Save new avatar
-    const newFileName = req.file.filename;
+    // Get the file extension from the original filename
+    const fileExt = path.extname(req.file.originalname);  // Get file extension
+    const newFileName = uuid() + fileExt;  // Create new filename with unique id and extension
 
-    const updatedAvatar = await User.findByIdAndUpdate(
-      req.user.id,
-      { avatar: newFileName },
-      { new: true }
-    );
+    // Move file to the desired location
+    const oldPath = path.join(__dirname, "..", "uploads", req.file.filename);
+    const newPath = path.join(__dirname, "..", "uploads", newFileName);
+    
+    fs.rename(oldPath, newPath, async (err) => {
+      if (err) {
+        return next(new HttpError(err));
+      }
 
-    if (!updatedAvatar) {
-      return next(new HttpError("Avatar couldn't be changed.", 422));
-    }
+      const updatedAvatar = await User.findByIdAndUpdate(
+        req.user.id,
+        { avatar: newFileName },
+        { new: true }
+      );
 
-    res.status(200).json(updatedAvatar);
+      if (!updatedAvatar) {
+        return next(new HttpError("Avatar couldn't be changed.", 422));
+      }
+
+      res.status(200).json(updatedAvatar);
+    });
   } catch (error) {
     return next(new HttpError(error));
   }
 };
 
+
 // ============== Change User Details (Profile Details) ==============
 // POST: api/users/edit-user
 const editUser = async (req, res, next) => {
-  res.json("Edit User");
+  try {
+    const { name, email, currentPassword, newPassword, confirmNewPassword } =
+      req.body;
+    if (!name || !email || !currentPassword || !newPassword) {
+      return next(new HttpError("Fill in all fields", 422));
+    }
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(new HttpError("User not found.", 403));
+    }
+
+    //make sure new email doesn't already exist
+    const emailExists = await User.findOne({ email });
+    if (emailExists && emailExists._id != req.user.id) {
+      return next(new HttpError("Email already exist.", 422));
+    }
+    //compare current password to db password
+    const validateUserPassword = await bcrypt.compare(
+      currentPassword,
+      user.password
+    );
+
+    //compare new password
+
+    if (newPassword !== confirmNewPassword) {
+      return next(new HttpError("New password  do not match", 422));
+    }
+
+    if (!validateUserPassword) {
+      return next(new HttpError("Invalid current password", 422));
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const Hash = await bcrypt.hash(newPassword, salt);
+
+    // update user infor in database
+    const newInfo = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email, password: Hash },
+      { new: true }
+    );
+
+    res.status(200).json(newInfo);
+  } catch (error) {
+    return next(new HttpError(error));
+  }
 };
 
 // ============== Get Author ==============

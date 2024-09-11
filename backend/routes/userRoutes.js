@@ -21,6 +21,6 @@ router.post("/login", loginUser);
 router.get("/:id", getUser);
 router.post("/change-avatar", authMiddleware, upload.single("avatar"), changeAvatar); //avatar name must be the same as the name in the input or it will not accept it!
 router.get("/", getAuthor);
-router.patch("/edit-user", editUser);
+router.patch("/edit-user", authMiddleware, editUser);
 
 module.exports = router;
