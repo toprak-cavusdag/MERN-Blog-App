@@ -2,6 +2,9 @@ const bcrypt = require("bcryptjs");
 const HttpError = require("../models/errorModel.js");
 const User = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const { v4: uuid } = require("uuid");
+
 // ============== Register a new user ==============
 // POST: api/users/register
 
@@ -100,8 +103,58 @@ const getUser = async (req, res, next) => {
 // POST: api/users/change-avatar
 const changeAvatar = async (req, res, next) => {
   try {
-    res.json(req.files);
-    console.log(req.files);
+    if (!req.file) {
+      return next(new HttpError("Please choose an image", 422));
+    }
+
+    //find user from database
+    const user = await User.findById(req.user.id);
+
+    //Delete old avatar if exists
+    if (user.avatar) {
+      fs.unlink(path.join(__dirname, "..", "uploads", user.avatar), (err) => {
+        if (err) {
+          return next(new HttpError(err));
+        }
+      });
+    }
+
+    const { avatar } = req.file;
+    //check file size
+
+    if (avatar.size > 500000) {
+      //0.5 mb
+      return new HttpError(
+        "Profile picture too big. Should be less than 500kb",
+        422
+      );
+    }
+
+    let fileName;
+    fileName = avatar.name;
+    let splittedFileName = fileName.plit(".");
+    let newFileName =
+      splittedFileName[0] +
+      uuid() +
+      "." +
+      splittedFileName[splittedFileName - 1];
+
+    avatar.mv(path.join(__dirname, "..", newFileName), async (err) => {
+      if (err) {
+        return next(new HttpError(err));
+      }
+
+      const updatedAvatar = await User.findByIdAndUpdate(
+        req.user.id,
+        { avatar: newFileName },
+        { new: true }
+      );
+
+      if (!updatedAvatar) {
+        return next(new HttpError("Avatar couldn't be changed."), 422);
+      }
+      res.status(200).json(updatedAvatar)
+    });
   } catch (error) {
     return next(new HttpError(error));
   }
@@ -123,7 +176,6 @@ const getAuthor = async (req, res, next) => {
     return next(new HttpError(error));
   }
 };
-
 
 module.exports = {
   registerUser,
