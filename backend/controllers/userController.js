@@ -3,6 +3,7 @@ const HttpError = require("../models/errorModel.js");
 const User = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const path = require('path');
 const { v4: uuid } = require("uuid");
 
 // ============== Register a new user ==============
@@ -107,10 +108,9 @@ const changeAvatar = async (req, res, next) => {
       return next(new HttpError("Please choose an image", 422));
     }
 
-    //find user from database
     const user = await User.findById(req.user.id);
-
-    //Delete old avatar if exists
+    
+    // Delete old avatar if exists
     if (user.avatar) {
       fs.unlink(path.join(__dirname, "..", "uploads", user.avatar), (err) => {
         if (err) {
@@ -119,42 +119,20 @@ const changeAvatar = async (req, res, next) => {
       });
     }
 
-    const { avatar } = req.file;
-    //check file size
+    // Save new avatar
+    const newFileName = req.file.filename;
 
-    if (avatar.size > 500000) {
-      //0.5 mb
-      return new HttpError(
-        "Profile picture too big. Should be less than 500kb",
-        422
-      );
+    const updatedAvatar = await User.findByIdAndUpdate(
+      req.user.id,
+      { avatar: newFileName },
+      { new: true }
+    );
+
+    if (!updatedAvatar) {
+      return next(new HttpError("Avatar couldn't be changed.", 422));
     }
 
-    let fileName;
-    fileName = avatar.name;
-    let splittedFileName = fileName.plit(".");
-    let newFileName =
-      splittedFileName[0] +
-      uuid() +
-      "." +
-      splittedFileName[splittedFileName - 1];
-
-    avatar.mv(path.join(__dirname, "..", newFileName), async (err) => {
-      if (err) {
-        return next(new HttpError(err));
-      }
-
-      const updatedAvatar = await User.findByIdAndUpdate(
-        req.user.id,
-        { avatar: newFileName },
-        { new: true }
-      );
-
-      if (!updatedAvatar) {
-        return next(new HttpError("Avatar couldn't be changed."), 422);
-      }
-      res.status(200).json(updatedAvatar)
-    });
+    res.status(200).json(updatedAvatar);
   } catch (error) {
     return next(new HttpError(error));
   }
