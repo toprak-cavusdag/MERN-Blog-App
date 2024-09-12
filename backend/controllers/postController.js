@@ -63,17 +63,34 @@ const createPost = async (req, res, next) => {
 
 //GET:api/posts
 const getPosts = async (req, res, next) => {
-  res.json("Get All Posts");
+  try {
+    const post = await Post.find({}).sort({ updateAt: -1 });
+    res.status(200).json(post);
+  } catch (error) {
+    return next(new HttpError(error));
+  }
 };
 
 //GET:api/posts/:id
 const getPost = async (req, res, next) => {
-  res.json("Get Single Post");
+  try {
+    const postID = await req.params.id;
+    const post = await Post.findById(postID);
+
+    if (!post) {
+      return next(new HttpError("Post not found", 404));
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    return next(new HttpError(error));
+  }
 };
 
 //GET:api/categories/:category
 const getCatPosts = async (req, res, next) => {
-  res.json("Get post by category");
+  const category = req.params;
+  const catPost = await Post.find(category).sort({ createdAt: -1 });
+  res.status(200).json(catPost);
 };
 
 //GET:api/posts/users/:id
