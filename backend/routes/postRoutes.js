@@ -16,13 +16,12 @@ const upload = multer({
   limits: { fileSize: 1024 * 1024 * 2 }, // 2MB sınırı
 });
 
-
-router.post("/", authMiddleware,upload.single("thumbnail")  , createPost);
+router.post("/", authMiddleware, upload.single("thumbnail"), createPost);
 router.get("/", getPosts);
 router.get("/:id", getPost);
 router.get("/categories/:category", getCatPosts);
 router.get("/users/:id", getAuthPosts);
-router.patch("/:id", authMiddleware, editPost);
-router.delete("/:id", authMiddleware, removePost);
+router.patch("/:id", authMiddleware, upload.single("thumbnail"), editPost);
+router.delete("/:id", authMiddleware, upload.single(), removePost);
 
 module.exports = router;
