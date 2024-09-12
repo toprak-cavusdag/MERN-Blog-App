@@ -18,6 +18,7 @@ const postSchema = new Schema(
       message: "Value is not support",
     },
     description: { type: String, required: true },
+    thumbnail: { type: String, required: true },
     creator: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
