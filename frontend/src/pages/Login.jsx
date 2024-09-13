@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
+import apiClients from "../lib/apiRequest";
 
 const Login = () => {
   const [userData, setUserDate] = useState({
@@ -7,12 +9,34 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const { setCurrentUser } = useContext(UserContext);
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await apiClients.apiBaseUrl.post(
+        "/users/login/",
+        userData
+      );
+      const user = await response.data;
+      setCurrentUser(user);
+      navigate("/");
+    } catch (error) {
+      setError(error.response?.data.message); //HttpError messages
+    }
+  };
+
   return (
     <section className="login">
       <div className="container">
         <h2>Login</h2>
-        <form className="form login__form">
-          <p className="form__error-message">This is an error message</p>
+        <form className="form login__form" onSubmit={loginUser}>
+          {error && <p className="form__error-message">{error}</p>}
           <input
             type="email"
             placeholder="Email address"

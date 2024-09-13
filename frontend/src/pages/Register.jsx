@@ -21,11 +21,10 @@ const Register = () => {
         userData
       );
       const newUser = await response.data;
-      console.log(newUser);
       if (!newUser) {
         setError("Couldn't register user. Please try again.");
       }
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
       setError(error.response?.data.message);

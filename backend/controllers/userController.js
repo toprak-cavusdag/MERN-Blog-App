@@ -68,7 +68,9 @@ const loginUser = async (req, res, next) => {
 
     const comparePass = await bcrypt.compare(password, user.password);
     if (!comparePass) {
-      return next(new HttpError("Invalid credentials", 422));
+      return next(
+        new HttpError("Your password or email address is incorrect", 422)
+      );
     }
 
     const { _id: id, name } = user;
