@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import apiClients from "../lib/apiRequest";
+import ReactTimeAgo from "react-time-ago"
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en"
 
-const PostAuthor = ({ authorID, createAt }) => {
+TimeAgo.addLocale(en)
+TimeAgo.addDefaultLocale(en)
+
+
+const PostAuthor = ({ authorID, createdAt }) => {
   const [author, setAuthor] = useState([]);
 
   useEffect(() => {
@@ -26,8 +33,8 @@ const PostAuthor = ({ authorID, createAt }) => {
         />
       </div>
       <div className="post__author-details">
-        <h5>By: Erbest Achiever</h5>
-        <small>Just Now</small>
+        <h5>By:{" "} {author?.name}</h5>
+        <small><ReactTimeAgo date={new Date(createdAt)} locale="en-US" /></small> 
       </div>
     </Link>
   );

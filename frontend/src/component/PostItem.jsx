@@ -9,12 +9,13 @@ const PostItem = ({
   desc,
   authorID,
   thumbnail,
-  createAt,
+  createdAt,
 }) => {
   const shortDescription =
     desc.length > 145 ? desc.substr(0, 145) + "..." : desc;
   const shortTitle = title.length > 35 ? desc.substr(0, 35) + "..." : title;
   const navigate = useNavigate();
+
   return (
     <article onClick={() => navigate(`/posts/${postID}`)} className="post">
       <div className="post__thumbnail">
@@ -27,7 +28,7 @@ const PostItem = ({
         <h3>{shortTitle}</h3>
         <p>{shortDescription}</p>
         <div className="post__footer">
-          <PostAuthor authorID={authorID} createAt={createAt} />
+          <PostAuthor authorID={authorID} createdAt={createdAt} />
           <Link className="btn category" to={`/posts/categories/${category}`}>
             {category}
           </Link>

@@ -26,18 +26,31 @@ const Posts = () => {
     <section className="posts">
       {posts.length > 0 ? (
         <div className="container posts__container">
-          {posts.map(({_id: id, thumbnail, creator, category, description, title, createAt }) => (
-            <PostItem
-              key={id}
-              postID={id}
-              createAt={createAt}
-              thumbnail={thumbnail}
-              authorID={creator}
-              category={category}
-              desc={description}
-              title={title}
-            />
-          ))}
+          {posts.map(
+            ({
+              _id: id,
+              thumbnail,
+              creator,
+              category,
+              description,
+              title,
+              createdAt,
+            }) => {
+
+              return (
+                <PostItem
+                  key={id}
+                  postID={id}
+                  createdAt={createdAt}                   
+                  thumbnail={thumbnail}
+                  authorID={creator}
+                  category={category}
+                  desc={description}
+                  title={title}
+                />
+              );
+            }
+          )}
         </div>
       ) : (
         <h2 className="center">No Posts Found!</h2>

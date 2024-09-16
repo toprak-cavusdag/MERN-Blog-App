@@ -130,13 +130,13 @@ const changeAvatar = async (req, res, next) => {
     }
 
     // Get the file extension from the original filename
-    const fileExt = path.extname(req.file.originalname);  // Get file extension
-    const newFileName = uuid() + fileExt;  // Create new filename with unique id and extension
+    const fileExt = path.extname(req.file.originalname); // Get file extension
+    const newFileName = uuid() + fileExt; // Create new filename with unique id and extension
 
     // Move file to the desired location
     const oldPath = path.join(__dirname, "..", "uploads", req.file.filename);
     const newPath = path.join(__dirname, "..", "uploads", newFileName);
-    
+
     fs.rename(oldPath, newPath, async (err) => {
       if (err) {
         return next(new HttpError(err));
@@ -158,7 +158,6 @@ const changeAvatar = async (req, res, next) => {
     return next(new HttpError(error));
   }
 };
-
 
 // ============== Change User Details (Profile Details) ==============
 // POST: api/users/edit-user
