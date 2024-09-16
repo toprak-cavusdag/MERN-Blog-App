@@ -11,7 +11,6 @@ const Header = () => {
   );
 
   const { currentUser } = useContext(UserContext);
-
   const navCloseHandler = () => {
     if (window.innerWidth < 800) {
       setIsActive(false);
@@ -29,7 +28,7 @@ const Header = () => {
         {currentUser?.id && isActive && (
           <ul className="nav__menu">
             <li>
-              <Link onClick={navCloseHandler} to="/profile">
+              <Link onClick={navCloseHandler} to={`/profile/${currentUser.id}`}>
                 Ernest Achiever
               </Link>
             </li>

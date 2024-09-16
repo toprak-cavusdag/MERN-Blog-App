@@ -398,6 +398,10 @@ textarea {
   margin-top: 1rem;
 }
 
+.top-push{
+  margin-top: 6rem;
+}
+
 /* ======================= Profile DETAILS ======================= */
 
 .profile__container {

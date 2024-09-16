@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostItem from "./PostItem";
-import { DUMMY_POST } from "../constant/data";
+import apiClients from "../lib/apiRequest";
 
 const Posts = () => {
-  const [posts, setPosts] = useState(DUMMY_POST);
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await apiClients.apiBaseUrl.get("/posts");
+        setPosts(response?.data);
+      } catch (error) {
+        console.log(error);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchPosts();
+  }, []);
+
   return (
     <section className="posts">
       {posts.length > 0 ? (
         <div className="container posts__container">
-          {posts.map(({ id, thumbnail, authorID, category, desc, title }) => (
+          {posts.map(({_id: id, thumbnail, creator, category, description, title, createAt }) => (
             <PostItem
               key={id}
               postID={id}
+              createAt={createAt}
               thumbnail={thumbnail}
-              authorID={authorID}
+              authorID={creator}
               category={category}
-              desc={desc}
+              desc={description}
               title={title}
             />
           ))}

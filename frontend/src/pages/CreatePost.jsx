@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { POST_CATEGORIES } from "../constant/data";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
+
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Uncategorized");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+
+  const navigate = useNavigate();
+  const { currentUser } = useContext(UserContext);
+  const token = currentUser?.token;
+
+  //Redirect to login page for any user who isn't logged in
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
 
   const modules = {
     toolbar: [
@@ -38,7 +52,7 @@ const CreatePost = () => {
   ];
 
   return (
-    <div className="create-post">
+    <div className="create-post top-push">
       <div className="container">
         <h2>Create Post</h2>
         <p className="form__error-message">This is an error message</p>

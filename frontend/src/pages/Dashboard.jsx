@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DUMMY_POST } from "../constant/data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState(DUMMY_POST);
+
+  const navigate = useNavigate();
+  const { currentUser } = useContext(UserContext);
+  const token = currentUser?.token;
+
+  //Redirect to login page for any user who isn't logged in
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <section className="dashboard">
       {posts.length ? (
@@ -17,9 +30,15 @@ const Dashboard = () => {
                 <h5>{post.title}</h5>
               </div>
               <div className="dashboard__post-actions">
-                <Link to={`/posts/${post.id}`} className="btn sm">View</Link>
-                <Link to={`/posts/${post.id}/edit`} className="btn sm primary">Edit</Link>
-                <Link to={`/posts/${post.id}/delete`} className="btn sm danger">Delete</Link>
+                <Link to={`/posts/${post.id}`} className="btn sm">
+                  View
+                </Link>
+                <Link to={`/posts/${post.id}/edit`} className="btn sm primary">
+                  Edit
+                </Link>
+                <Link to={`/posts/${post.id}/delete`} className="btn sm danger">
+                  Delete
+                </Link>
               </div>
             </article>
           ))}
