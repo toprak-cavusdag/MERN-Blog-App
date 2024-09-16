@@ -16,6 +16,7 @@ const createPost = async (req, res, next) => {
       );
     }
     const thumbnail = req.file;
+    console.log(thumbnail)
 
     //check file size
 
