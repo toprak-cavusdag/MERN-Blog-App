@@ -346,6 +346,10 @@ textarea {
   place-items: center;
 }
 
+.create-post{
+  min-height: 100vh;
+}
+
 .register h2,
 .login h2,
 .create-post h2 {
