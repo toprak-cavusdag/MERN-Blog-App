@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PostItem from "./PostItem";
 import apiClients from "../lib/apiRequest";
+import Loader from "./Loader";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -21,6 +22,10 @@ const Posts = () => {
 
     fetchPosts();
   }, []);
+
+  if(isLoading){
+    return <Loader />
+  }
 
   return (
     <section className="posts">

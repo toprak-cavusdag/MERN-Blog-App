@@ -17,15 +17,15 @@ const PostItem = ({
   const navigate = useNavigate();
 
   return (
-    <article onClick={() => navigate(`/posts/${postID}`)} className="post">
-      <div className="post__thumbnail">
+    <article className="post">
+      <div onClick={() => navigate(`/posts/${postID}`)} className="post__thumbnail">
         <img
           src={`${import.meta.env.VITE_APP_ASSETS_URL}/uploads/${thumbnail}`}
           alt={title}
         />
       </div>
       <div className="post__content">
-        <h3>{shortTitle}</h3>
+        <h3 onClick={() => navigate(`/posts/${postID}`)}>{shortTitle}</h3>
         <p>{shortDescription}</p>
         <div className="post__footer">
           <PostAuthor authorID={authorID} createdAt={createdAt} />

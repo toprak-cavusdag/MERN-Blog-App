@@ -235,7 +235,6 @@ footer {
   border-radius: var(--radius-4);
   padding-bottom: 2rem;
   transition: var(--transition);
-  cursor: pointer;
 }
 
 .post:hover {
@@ -246,6 +245,7 @@ footer {
   border-radius: var(--radius-3);
   overflow: hidden;
   height: 16rem;
+  cursor: pointer;
 }
 
 .post__content {
@@ -254,6 +254,7 @@ footer {
 
 .post__content h3 {
   margin: 1rem 0 0.6rem;
+  cursor: pointer;
 }
 
 .post__footer {
@@ -626,4 +627,18 @@ textarea {
   .dashboard_post-thumbnail{
     width: 5rem;
   }
+}
+
+
+
+
+
+.loader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center ;
 }
