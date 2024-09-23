@@ -365,6 +365,11 @@ textarea {
 
 /* ======================= Authors ======================= */
 
+
+.authors{
+  min-height: 50vh;
+}
+
 .authors__container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
