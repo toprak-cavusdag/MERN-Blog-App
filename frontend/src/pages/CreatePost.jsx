@@ -4,12 +4,14 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
+import apiClients from "../lib/apiRequest";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Uncategorized");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
@@ -51,12 +53,38 @@ const CreatePost = () => {
     "image",
   ];
 
+  const createPostHandle = async (e) => {
+    e.preventDefault();
+
+    const postData = new FormData();
+    postData.set("title", title);
+    postData.set("category", category);
+    postData.set("description", description);
+    postData.set("thumbnail", thumbnail);
+
+    try {
+      const response = await apiClients.apiBaseUrl.post(`/posts`, postData, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(response)
+
+      if(response.status === 200){
+        return navigate("/")
+      }
+
+    } catch (error) {
+      setError(error.response.data.message)
+    }
+  };
+
   return (
     <div className="create-post top-push">
       <div className="container">
         <h2>Create Post</h2>
-        <p className="form__error-message">This is an error message</p>
-        <form className="form create-post__form">
+        {error && <p className="form__error-message">{error}</p>}
+        <form className="form create-post__form" onSubmit={createPostHandle}>
           <input
             type="text"
             name="title"

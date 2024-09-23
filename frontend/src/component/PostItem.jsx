@@ -25,10 +25,12 @@ const PostItem = ({
         />
       </div>
       <div className="post__content">
-        <h3 onClick={() => navigate(`/posts/${postID}`)}>{shortTitle}</h3>
-        <p>{shortDescription}</p>
+        <h3 dangerouslySetInnerHTML={{__html: shortTitle}} onClick={() => navigate(`/posts/${postID}`)} />
+        <p dangerouslySetInnerHTML={{__html: shortDescription}} />
+        
         <div className="post__footer">
           <PostAuthor authorID={authorID} createdAt={createdAt} />
+
           <Link className="btn category" to={`/posts/categories/${category}`}>
             {category}
           </Link>
