@@ -56,9 +56,34 @@ const EditPost = () => {
 
   const getPostHandle = async () => {
     try {
-      const response = await apiClients.apiBaseUrl.get(`/posts/${id}`);
+      const response = await apiClients.apiBaseUrl.get(`/posts/${id}`, postData);
       setTitle(response.data.title);
       setDescription(response.data.description);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
+  const editPostHandle = async (e) => {
+    e.preventDefault();
+
+    const postData = new FormData();
+    postData.set("title", title);
+    postData.set("category", category);
+    postData.set("description", description);
+    postData.set("thumbnail", thumbnail);
+
+    try {
+      const response = await apiClients.apiBaseUrl.patch(`/posts/${id}`, postData, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(response);
+
+      if (response.status === 200) {
+        return navigate("/");
+      }
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -73,7 +98,7 @@ const EditPost = () => {
       <div className="container">
         <h2>Edit Post</h2>
         {error && <p className="form__error-message">{error}</p>}
-        <form className="form create-post__form">
+        <form className="form create-post__form" onSubmit={editPostHandle}>
           <input
             type="text"
             name="title"

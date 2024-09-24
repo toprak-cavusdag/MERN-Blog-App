@@ -68,8 +68,6 @@ const CreatePost = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(response)
-
       if(response.status === 200){
         return navigate("/")
       }

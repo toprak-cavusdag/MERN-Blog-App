@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import apiClients from "../lib/apiRequest";
 
-const DeletePost = () => {
+const DeletePost = ({ postID: id }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser } = useContext(UserContext);
   const token = currentUser?.token;
 
@@ -12,9 +14,34 @@ const DeletePost = () => {
     if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [token, navigate]);
 
-  return <Link className="btn sm danger">Delete</Link>;
+  const removePost = async (id) => {
+    try {
+      const response = await apiClients.apiBaseUrl.delete(`/posts/${id}`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status === 200) {
+        console.log("Post deleted successfully");
+        if (location.pathname === `/myposts/${currentUser.id}`) {
+          window.location.reload(); 
+        } else {
+          navigate("/"); 
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error.response ? error.response.data : error.message);
+    }
+  };
+  
+
+  return (
+    <button className="btn sm danger" onClick={() => removePost(id)}>
+      Delete
+    </button>
+  );
 };
 
 export default DeletePost;

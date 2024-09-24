@@ -4,6 +4,8 @@ const path = require("path");
 const fs = require("fs");
 const { v4: uuid } = require("uuid");
 const HttpError = require("../models/errorModel.js");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 
 //POST:api/posts
 const createPost = async (req, res, next) => {
@@ -16,7 +18,6 @@ const createPost = async (req, res, next) => {
       );
     }
     const thumbnail = req.file;
-    console.log(thumbnail)
 
     //check file size
 
@@ -184,29 +185,35 @@ const removePost = async (req, res, next) => {
   if (!postID) {
     return next(new HttpError("Post unavailable", 400));
   }
-  const post = await Post.findById(postID);
-  const oldThumbnail = post.thumbnail;
-  if (oldThumbnail) {
-    const oldThumbnailPath = path.join(
-      __dirname,
-      "..",
-      "uploads",
-      oldThumbnail
-    );
-    fs.unlink(oldThumbnailPath, async (err) => {
-      if (err) {
-        //delete post
-        await Post.findByIdAndDelete(postID);
-        //user post count decrease
-        const currentUser = await User.findById(req.user.id);
-        console.log("user post decrease");
-        const userPostCount = currentUser?.posts - 1;
-        await User.findByIdAndUpdate(req.user.id, { posts: userPostCount });
-        return res
-          .status(200)
-          .json({ message: `Post ${postID} deleted successfully` });
-      }
-    });
+
+  try {
+    const post = await Post.findById(postID);
+    if (!post) {
+      return next(new HttpError("Post not found", 404));
+    }
+
+    const oldThumbnail = post.thumbnail;
+
+    if (oldThumbnail) {
+      const oldThumbnailPath = path.join(__dirname, "..", "uploads", oldThumbnail);
+      // Thumbnail'ı silmek için unlink'i promisify ederek await ile kullanıyoruz
+      await unlinkAsync(oldThumbnailPath);
+    }
+
+    // Postu silme işlemi
+    await Post.findByIdAndDelete(postID);
+
+    // Kullanıcının post sayısını azaltma
+    const currentUser = await User.findById(req.user.id);
+    if (currentUser) {
+      const userPostCount = currentUser.posts - 1;
+      await User.findByIdAndUpdate(req.user.id, { posts: userPostCount });
+    }
+
+    return res.status(200).json({ message: `Post ${postID} deleted successfully` });
+  } catch (err) {
+    console.error("Error deleting post or thumbnail:", err);
+    return next(new HttpError("Failed to delete post", 500));
   }
 };
 
