@@ -8,12 +8,11 @@ import { UserContext } from "../context/userContext";
 const UserProfile = () => {
   const [avatar, setAvatar] = useState(Avatar);
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [currentPassword, setCurrentPassword] = useState("")
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
@@ -29,7 +28,7 @@ const UserProfile = () => {
   return (
     <section className="profile">
       <div className="container profile__container">
-        <Link to={`/myposts/pfelelwpg`} className="btn">
+        <Link to={`/myposts/${currentUser.id}`} className="btn">
           My Posts
         </Link>
 
@@ -60,12 +59,39 @@ const UserProfile = () => {
           {/* Form to update user details */}
           <form className="form profile__form">
             <p className="form__error-message">This is an error message</p>
-            <input type="text" placeholder="Full Name"value={name} onChange={e => setName(e.target.value)} />
-            <input type="email" placeholder="Email"value={email} onChange={e => setEmail(e.target.value)} />
-            <input type="password" placeholder="Current Password"value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
-            <input type="password" placeholder="New Password"value={newPassword} onChange={e => setNewPassword(e.target.value)} />
-            <input type="password" placeholder="Confirm Password (write again)"value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-            <button className="btn primary" type="submit">Update Details</button>
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Current Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password (write again)"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <button className="btn primary" type="submit">
+              Update Details
+            </button>
           </form>
         </div>
       </div>

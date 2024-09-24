@@ -23,6 +23,7 @@ const EditPost = () => {
     if (!token) {
       navigate("/login");
     }
+    getPostHandle();
   }, []);
 
   const modules = {
@@ -56,7 +57,7 @@ const EditPost = () => {
 
   const getPostHandle = async () => {
     try {
-      const response = await apiClients.apiBaseUrl.get(`/posts/${id}`, postData);
+      const response = await apiClients.apiBaseUrl.get(`/posts/${id}`);
       setTitle(response.data.title);
       setDescription(response.data.description);
     } catch (error) {
@@ -66,7 +67,6 @@ const EditPost = () => {
 
   const editPostHandle = async (e) => {
     e.preventDefault();
-
     const postData = new FormData();
     postData.set("title", title);
     postData.set("category", category);
@@ -89,9 +89,6 @@ const EditPost = () => {
     }
   };
 
-  useEffect(() => {
-    getPostHandle();
-  }, []);
 
   return (
     <div className="create-post">
