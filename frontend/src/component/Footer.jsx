@@ -31,7 +31,7 @@ const Footer = () => {
         </li>
       </ul>
       <div className="footer__copyright">
-        <small>All Rights Reserved &copy; Copyright, CodeLoom Software.</small>
+        <small>All Rights Reserved &copy; Copyright by <Link style={{color: "white", textDecoration: "underline"}} to="https://toprak-cavusdag.vercel.app/" target="_blank" >Toprak Çavuşdağ</Link>.</small>
       </div>
     </footer>
   );

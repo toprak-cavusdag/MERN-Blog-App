@@ -207,6 +207,7 @@ footer {
   font-weight: 300;
 }
 
+
 .center {
   text-align: center;
   padding: 5rem;
@@ -244,6 +245,7 @@ footer {
 .post__thumbnail {
   border-radius: var(--radius-3);
   overflow: hidden;
+  object-fit: cover;
   height: 16rem;
   cursor: pointer;
 }

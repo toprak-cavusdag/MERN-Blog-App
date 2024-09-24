@@ -111,8 +111,8 @@ const UserProfile = () => {
                 onChange={(e) => setAvatar(e.target.files[0])}
                 name="avatar"
                 id="avatar"
-                accept="png, jpg, jpeg, webp"
-              />
+                accept="image/*"
+                />
               <label htmlFor="avatar" onClick={() => setIsAvatarTouched(true)}>
                 <BiEdit />
               </label>

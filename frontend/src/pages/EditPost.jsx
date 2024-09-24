@@ -123,8 +123,8 @@ const EditPost = () => {
           <input
             type="file"
             onChange={(e) => setThumbnail(e.target.files[0])}
-            accept="png, jpeg, jpg, webp"
-          />
+            accept="image/*"
+            />
           <button type="submit" className="btn primary">
             Update
           </button>
